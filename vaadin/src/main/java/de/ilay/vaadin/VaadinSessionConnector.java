@@ -7,7 +7,7 @@ import de.ilay.api.User;
 
 import java.util.Optional;
 
-class VaadinSessionConnector<USER extends User<?>> implements SessionConnector<USER> {
+public class VaadinSessionConnector<USER extends User<?>> implements SessionConnector<USER> {
 
     private final Class<USER> userType;
 
