@@ -1,30 +1,43 @@
 package de.ilay.service;
 
-import de.ilay.api.AuthenticationEngine;
 import de.ilay.api.AuthorizationAwareUser;
 import de.ilay.api.AuthorizationEngine;
-import de.ilay.api.SessionConnector;
+import de.ilay.api.CurrentUserProvider;
 
 import java.util.Optional;
 
-public class AuthorizationService<CREDENTIALS, PERMISSION, USER extends AuthorizationAwareUser<CREDENTIALS, PERMISSION>>
-        extends AuthenticationService<CREDENTIALS, USER> {
+/**
+ * A service for user-authorization. Instances of this class decide whether a certain permission is
+ * granted in the current context.
+ * @param <PERMISSION> the types of permission that are to be evaluated
+ * @param <USER> the types of users an AuthorizationService applies to
+ */
+public class AuthorizationService<PERMISSION, USER extends AuthorizationAwareUser<?, PERMISSION>> {
 
     private final AuthorizationEngine<PERMISSION, USER> authorizationEngine;
+    private final CurrentUserProvider<USER> currentUserProvider;
 
+    /**
+     * @param authorizationEngine the {@see AuthorizationEngine} used to evaluate permissions
+     * @param currentUserProvider the {@see CurrentUserProvider} used to get the current user that a permission is to be evaluated against
+     */
     public AuthorizationService(
-            AuthenticationEngine<CREDENTIALS, USER> authenticationEngine,
             AuthorizationEngine<PERMISSION, USER> authorizationEngine,
-            SessionConnector<USER> sessionConnector
+            CurrentUserProvider<USER> currentUserProvider
     ) {
-        super(authenticationEngine, sessionConnector);
         this.authorizationEngine = authorizationEngine;
+        this.currentUserProvider = currentUserProvider;
     }
 
+    /**
+     * decides whether a certain PERMISSION is granted in the current context, that is for the currently logged in user
+     * @param permission the permission which is to be evaluated
+     * @return true if the permission was granted, otherwise false
+     */
     public boolean isPermitted(PERMISSION permission) {
         if (permission == null) throw new IllegalArgumentException("permission cannot be null");
 
-        final Optional<USER> currentUser = getCurrent();
+        final Optional<USER> currentUser = currentUserProvider.getCurrent();
 
         return currentUser.isPresent()
                 ? authorizationEngine.hasPermission(currentUser.get(), permission)

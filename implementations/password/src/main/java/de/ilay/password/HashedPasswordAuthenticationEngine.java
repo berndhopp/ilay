@@ -7,7 +7,7 @@ import java.util.Optional;
 public abstract class HashedPasswordAuthenticationEngine<USER_IDENTIFIER, CREDENTIALS extends PasswordCredentials<USER_IDENTIFIER>, USER extends HashedPasswordAuthentifyingUser<CREDENTIALS>>
         implements AuthenticationEngine<CREDENTIALS, USER>{
 
-    public Optional<USER> login(CREDENTIALS credentials) {
+    public Optional<USER> loadUser(CREDENTIALS credentials) {
         Optional<USER> user = getUser(credentials.getUserIdentifier());
 
         if(!user.isPresent()){

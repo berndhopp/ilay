@@ -36,13 +36,13 @@ public class BCryptHashedPasswordAuthenticationEngineTest {
     
     @Test
     public void login_with_correct_credentials_should_return_user(){
-        Optional<UserImpl> user1Optional = engine.login(new CredentialsImpl(USER_1_PASSWORD, 1));
+        Optional<UserImpl> user1Optional = engine.loadUser(new CredentialsImpl(USER_1_PASSWORD, 1));
 
         Assert.assertNotNull(user1Optional);
         Assert.assertTrue(user1Optional.isPresent());
         Assert.assertEquals(user1, user1Optional.get());
 
-        Optional<UserImpl> user2Optional = engine.login(new CredentialsImpl(USER_2_PASSWORD, 2));
+        Optional<UserImpl> user2Optional = engine.loadUser(new CredentialsImpl(USER_2_PASSWORD, 2));
 
         Assert.assertNotNull(user2Optional);
         Assert.assertTrue(user2Optional.isPresent());
@@ -52,7 +52,7 @@ public class BCryptHashedPasswordAuthenticationEngineTest {
     @Test
     public void login_with_wrong_password_should_return_optional_empty(){
 
-        Optional<UserImpl> user1Optional = engine.login(new CredentialsImpl("foobar", 1));
+        Optional<UserImpl> user1Optional = engine.loadUser(new CredentialsImpl("foobar", 1));
 
         Assert.assertNotNull(user1Optional);
         Assert.assertFalse(user1Optional.isPresent());
@@ -60,7 +60,7 @@ public class BCryptHashedPasswordAuthenticationEngineTest {
 
     @Test
     public void login_with_unknown_user_id_should_return_optional_empty(){
-        Optional<UserImpl> user2Optional = engine.login(new CredentialsImpl(USER_2_PASSWORD, 3));
+        Optional<UserImpl> user2Optional = engine.loadUser(new CredentialsImpl(USER_2_PASSWORD, 3));
 
         Assert.assertNotNull(user2Optional);
         Assert.assertFalse(user2Optional.isPresent());

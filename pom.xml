@@ -9,7 +9,8 @@
     <version>1.0</version>
     <modules>
         <module>api</module>
-        <module>vaadin</module>
-        <module>authorization</module>
+        <module>implementations/password</module>
+        <module>implementations/vaadin</module>
+        <module>examples/vaadin-example</module>
     </modules>
 </project>
