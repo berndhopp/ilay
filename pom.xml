@@ -8,9 +8,9 @@
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
-        <module>api</module>
-        <module>implementations/password</module>
-        <module>implementations/vaadin</module>
-        <module>examples/vaadin-example</module>
+        <module>base</module>
+        <module>implementation/password</module>
+        <module>integration/vaadin</module>
+        <module>example/vaadin-example</module>
     </modules>
 </project>
