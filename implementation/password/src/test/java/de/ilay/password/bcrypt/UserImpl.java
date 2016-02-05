@@ -1,6 +1,6 @@
 package de.ilay.password.bcrypt;
 
-class UserImpl extends BCryptHashedPasswordAuthentifyingUser<CredentialsImpl> {
+class UserImpl extends BCryptHashedPasswordAuthentifyingUser {
     private String passwordHash;
 
     public String getPasswordHash() {

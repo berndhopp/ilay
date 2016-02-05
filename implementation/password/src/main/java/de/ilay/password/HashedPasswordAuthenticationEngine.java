@@ -4,7 +4,7 @@ import de.ilay.api.AuthenticationEngine;
 
 import java.util.Optional;
 
-public abstract class HashedPasswordAuthenticationEngine<USER_IDENTIFIER, CREDENTIALS extends PasswordCredentials<USER_IDENTIFIER>, USER extends HashedPasswordAuthentifyingUser<CREDENTIALS>>
+public abstract class HashedPasswordAuthenticationEngine<USER_IDENTIFIER, CREDENTIALS extends PasswordCredentials<USER_IDENTIFIER>, USER extends HashedPasswordAuthentifyingUser>
         implements AuthenticationEngine<CREDENTIALS, USER>{
 
     public Optional<USER> authenticateUser(CREDENTIALS credentials) {

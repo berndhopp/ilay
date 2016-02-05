@@ -1,6 +1,6 @@
 package de.ilay.password;
 
-public abstract class HashedPasswordAuthentifyingUserBase<CREDENTIALS extends PasswordCredentials> implements HashedPasswordAuthentifyingUser<CREDENTIALS> {
+public abstract class HashedPasswordAuthentifyingUserBase implements HashedPasswordAuthentifyingUser {
 
     protected abstract String hashPassword(String password);
 
