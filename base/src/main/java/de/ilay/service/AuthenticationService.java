@@ -40,7 +40,8 @@ public class AuthenticationService<CREDENTIALS, USER> {
         final Optional<USER> user = authenticationEngine.authenticateUser(credentials);
 
         if (user.isPresent()) {
-            sessionConnector.setCurrent(user.get());
+            sessionConnector.set(user.get());
+
         }
 
         return user;
@@ -56,6 +57,6 @@ public class AuthenticationService<CREDENTIALS, USER> {
             throw new IllegalStateException("cannot logout when no user is logged in");
         }
 
-        sessionConnector.setCurrent(null);
+        sessionConnector.set(null);
     }
 }

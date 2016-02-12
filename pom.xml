@@ -11,6 +11,6 @@
         <module>base</module>
         <module>implementation/password</module>
         <module>integration/vaadin</module>
-        <module>example/vaadin-example</module>
+        <module>integration/vaadin-guice</module>
     </modules>
 </project>

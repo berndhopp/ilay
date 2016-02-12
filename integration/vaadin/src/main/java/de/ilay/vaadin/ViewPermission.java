@@ -15,7 +15,7 @@ public class ViewPermission {
     }
 
     /**
-     * @return the {@see ViewChangeListener.ViewChangeEvent}
+     * @return the {@see IlayViewChangeListener.ViewChangeEvent}
      */
     public ViewChangeListener.ViewChangeEvent getViewChangeEvent() {
         return viewChangeEvent;
