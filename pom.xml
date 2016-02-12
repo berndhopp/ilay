@@ -12,5 +12,6 @@
         <module>implementation/password</module>
         <module>integration/vaadin</module>
         <module>integration/vaadin-guice</module>
+        <module>implementation/group-based-permissions</module>
     </modules>
 </project>

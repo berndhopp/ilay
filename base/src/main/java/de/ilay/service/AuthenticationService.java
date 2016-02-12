@@ -41,7 +41,6 @@ public class AuthenticationService<CREDENTIALS, USER> {
 
         if (user.isPresent()) {
             sessionConnector.set(user.get());
-
         }
 
         return user;
@@ -51,12 +50,6 @@ public class AuthenticationService<CREDENTIALS, USER> {
      * log out the current user and disconnect him from the current session
      */
     public void logout() {
-        final Optional<USER> currentUser = sessionConnector.getCurrent();
-
-        if(!currentUser.isPresent()){
-            throw new IllegalStateException("cannot logout when no user is logged in");
-        }
-
-        sessionConnector.set(null);
+        sessionConnector.unSet();
     }
 }
