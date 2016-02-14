@@ -1,6 +1,6 @@
 package de.ilay.groups;
 
-import de.ilay.api.AuthorizationEngine;
+import de.ilay.sample.api.AuthorizationEngine;
 
 public class GroupBasedAuthorizationEngine<GROUP, PERMISSION extends GroupPermission<GROUP>, USER extends GroupAwareUser<GROUP>>
         implements AuthorizationEngine<PERMISSION,USER> {

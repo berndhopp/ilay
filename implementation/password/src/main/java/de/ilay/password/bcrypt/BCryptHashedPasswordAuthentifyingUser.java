@@ -1,7 +1,6 @@
 package de.ilay.password.bcrypt;
 
 import de.ilay.password.HashedPasswordAuthentifyingUserBase;
-import de.ilay.password.PasswordCredentials;
 
 import static de.ilay.password.bcrypt.BCrypt.gensalt;
 

@@ -4,27 +4,28 @@ import com.google.inject.Inject;
 
 import com.vaadin.guice.annotation.UIScope;
 
-import de.ilay.api.AuthenticationListener;
-import de.ilay.service.AuthorizationService;
-import de.ilay.vaadin.VaadinSessionConnector;
+import de.ilay.sample.api.AuthenticationListener;
+import de.ilay.sample.service.AuthorizationService;
 
 import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @UIScope
 public class VisibilityManager<PERMISSION, USER>  {
 
     private final VaadinSessionConnector<USER> sessionConnector;
     private final AuthorizationService<PERMISSION, USER> authorizationService;
-    private final Set<AuthorizationDependentComponent<PERMISSION>> components;
+    private final Set<AuthorizedComponent<PERMISSION>> components;
 
     @Inject
     VisibilityManager(
             VaadinSessionConnector<USER> sessionConnector,
             AuthorizationService<PERMISSION, USER> authorizationService,
-            Set<AuthorizationDependentComponent<PERMISSION>> components){
-        this.sessionConnector = sessionConnector;
-        this.authorizationService = authorizationService;
-        this.components = components;
+            Set<AuthorizedComponent<PERMISSION>> components){
+        this.sessionConnector = checkNotNull(sessionConnector);
+        this.authorizationService = checkNotNull(authorizationService);
+        this.components = checkNotNull(components);
     }
 
     public void start(){
@@ -41,7 +42,7 @@ public class VisibilityManager<PERMISSION, USER>  {
     }
 
     private void reEvaluateVisibility(){
-        for (AuthorizationDependentComponent<PERMISSION> component : components) {
+        for (AuthorizedComponent<PERMISSION> component : components) {
             boolean componentIsPermitted = authorizationService.isPermitted(component.getNeededPermission());
             component.setVisible(componentIsPermitted);
         }

@@ -1,7 +1,7 @@
-package de.ilay.service;
+package de.ilay.sample.service;
 
-import de.ilay.api.AuthorizationEngine;
-import de.ilay.api.CurrentUserProvider;
+import de.ilay.sample.api.AuthorizationEngine;
+import de.ilay.sample.api.CurrentUserProvider;
 
 import java.util.Optional;
 

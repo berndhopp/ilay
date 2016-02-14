@@ -1,9 +1,9 @@
-package de.ilay.vaadin;
+package de.ilay.vaadin.guice;
 
 import com.vaadin.server.VaadinSession;
 
-import de.ilay.api.AuthenticationListener;
-import de.ilay.api.SessionConnector;
+import de.ilay.sample.api.AuthenticationListener;
+import de.ilay.sample.api.SessionConnector;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -75,3 +75,4 @@ public class VaadinSessionConnector<USER> extends SessionConnector<USER> {
         getVaadinSession().setAttribute(userType, null);
     }
 }
+

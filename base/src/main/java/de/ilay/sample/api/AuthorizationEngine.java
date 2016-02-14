@@ -1,4 +1,4 @@
-package de.ilay.api;
+package de.ilay.sample.api;
 
 
 /**

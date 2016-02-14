@@ -1,5 +1,8 @@
 package de.ilay.password.bcrypt;
 
+import de.ilay.sample.Exception.AuthenticationException;
+import de.ilay.sample.Exception.UserNotFoundException;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,45 +27,39 @@ public class BCryptHashedPasswordAuthenticationEngineTest {
 
         engine = new BCryptHashedPasswordAuthenticationEngine<Integer, CredentialsImpl, UserImpl>() {
             @Override
-            protected Optional<UserImpl> getUser(Integer userId) {
+            protected UserImpl getUser(Integer userId) throws UserNotFoundException {
                 switch (userId){
-                    case 1: return Optional.of(user1);
-                    case 2: return Optional.of(user2);
-                    default: return Optional.empty();
+                    case 1: return user1;
+                    case 2: return user2;
+                    default: throw new UserNotFoundException();
                 }
             }
         };
     }
     
     @Test
-    public void login_with_correct_credentials_should_return_user(){
-        Optional<UserImpl> user1Optional = engine.authenticateUser(new CredentialsImpl(USER_1_PASSWORD, 1));
+    public void login_with_correct_credentials_should_return_user() throws UserNotFoundException, AuthenticationException {
+        UserImpl user1Optional = engine.authenticateUser(new CredentialsImpl(USER_1_PASSWORD, 1));
 
         Assert.assertNotNull(user1Optional);
-        Assert.assertTrue(user1Optional.isPresent());
-        Assert.assertEquals(user1, user1Optional.get());
+        Assert.assertEquals(user1, user1Optional);
 
-        Optional<UserImpl> user2Optional = engine.authenticateUser(new CredentialsImpl(USER_2_PASSWORD, 2));
+        UserImpl user2Optional = engine.authenticateUser(new CredentialsImpl(USER_2_PASSWORD, 2));
 
         Assert.assertNotNull(user2Optional);
-        Assert.assertTrue(user2Optional.isPresent());
-        Assert.assertEquals(user2, user2Optional.get());
+        Assert.assertEquals(user2, user2Optional);
     }
 
-    @Test
-    public void login_with_wrong_password_should_return_optional_empty(){
+    @Test(expected = AuthenticationException.class)
+    public void login_with_wrong_password_should_return_optional_empty() throws UserNotFoundException, AuthenticationException {
 
-        Optional<UserImpl> user1Optional = engine.authenticateUser(new CredentialsImpl("foobar", 1));
+        UserImpl user1Optional = engine.authenticateUser(new CredentialsImpl("foobar", 1));
 
         Assert.assertNotNull(user1Optional);
-        Assert.assertFalse(user1Optional.isPresent());
     }
 
-    @Test
-    public void login_with_unknown_user_id_should_return_optional_empty(){
-        Optional<UserImpl> user2Optional = engine.authenticateUser(new CredentialsImpl(USER_2_PASSWORD, 3));
-
-        Assert.assertNotNull(user2Optional);
-        Assert.assertFalse(user2Optional.isPresent());
+    @Test(expected = UserNotFoundException.class)
+    public void login_with_unknown_user_id_should_return_optional_empty() throws UserNotFoundException, AuthenticationException {
+        UserImpl user2Optional = engine.authenticateUser(new CredentialsImpl(USER_2_PASSWORD, 3));
     }
 }

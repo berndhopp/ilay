@@ -1,25 +1,27 @@
 package de.ilay.password;
 
-import de.ilay.api.AuthenticationEngine;
+import de.ilay.sample.Exception.AuthenticationException;
+import de.ilay.sample.Exception.UserNotFoundException;
+import de.ilay.sample.api.AuthenticationEngine;
 
 import java.util.Optional;
 
 public abstract class HashedPasswordAuthenticationEngine<USER_IDENTIFIER, CREDENTIALS extends PasswordCredentials<USER_IDENTIFIER>, USER extends HashedPasswordAuthentifyingUser>
-        implements AuthenticationEngine<CREDENTIALS, USER>{
+        implements AuthenticationEngine<CREDENTIALS, USER> {
 
-    public Optional<USER> authenticateUser(CREDENTIALS credentials) {
-        Optional<USER> user = getUser(credentials.getUserIdentifier());
+    public USER authenticateUser(CREDENTIALS credentials) throws UserNotFoundException, AuthenticationException {
+        USER user = getUser(credentials.getUserIdentifier());
 
-        if(!user.isPresent()){
-            return user;
+        final boolean passwordMatches = passwordsMatch(credentials.getPassword(), user.getPasswordHash());
+
+        if(!passwordMatches){
+            throw new AuthenticationException("passwords do not match");
         }
 
-        final boolean passwordMatches = passwordsMatch(credentials.getPassword(), user.get().getPasswordHash());
-
-        return passwordMatches ? user : Optional.<USER>empty();
+        return user;
     }
 
     protected abstract boolean passwordsMatch(String plainText, String hashed);
 
-    protected abstract Optional<USER> getUser(USER_IDENTIFIER userIdentifier);
+    protected abstract USER getUser(USER_IDENTIFIER userIdentifier) throws UserNotFoundException;
 }

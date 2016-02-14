@@ -1,7 +1,9 @@
-package de.ilay.service;
+package de.ilay.sample.service;
 
-import de.ilay.api.AuthenticationEngine;
-import de.ilay.api.SessionConnector;
+import de.ilay.sample.Exception.AuthenticationException;
+import de.ilay.sample.Exception.UserNotFoundException;
+import de.ilay.sample.api.AuthenticationEngine;
+import de.ilay.sample.api.SessionConnector;
 
 import java.util.Optional;
 
@@ -34,14 +36,12 @@ public class AuthenticationService<CREDENTIALS, USER> {
      * @param credentials the credentials to use for login
      * @return a user that was identified and authenticated by the given credentials, otherwise Optional.empty()
      */
-    public Optional<USER> login(CREDENTIALS credentials) {
+    public USER login(CREDENTIALS credentials) throws AuthenticationException, UserNotFoundException {
         if (credentials == null) throw new IllegalArgumentException("credentials cannot be null");
 
-        final Optional<USER> user = authenticationEngine.authenticateUser(credentials);
+        final USER user = authenticationEngine.authenticateUser(credentials);
 
-        if (user.isPresent()) {
-            sessionConnector.set(user.get());
-        }
+        sessionConnector.set(user);
 
         return user;
     }
