@@ -11,8 +11,9 @@ import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+
 @UIScope
-public class VisibilityManager<PERMISSION, USER> {
+public class VisibilityManager<PERMISSION, USER> implements AuthenticationListener<USER> {
 
     private final VaadinSessionConnector<USER> sessionConnector;
     private final AuthorizationService<PERMISSION, USER> authorizationService;
@@ -29,22 +30,27 @@ public class VisibilityManager<PERMISSION, USER> {
     }
 
     public void start() {
-        sessionConnector.addSessionAuthenticationListener(new AuthenticationListener<USER>() {
-            public void onLogin(USER user) {
-                reEvaluateVisibility();
-            }
-
-            public void onLogout(USER user) {
-                reEvaluateVisibility();
-            }
-        });
-
-        reEvaluateVisibility();
+        sessionConnector.addSessionAuthenticationListener(this);
+        init();
     }
 
-    private void reEvaluateVisibility() {
+    private void init() {
         for (AuthorizedComponent<PERMISSION> component : components) {
             boolean componentIsPermitted = authorizationService.isPermitted(component.getNeededPermission());
+            component.setVisible(componentIsPermitted);
+        }
+    }
+
+    public void onLogin(USER user) {
+        for (AuthorizedComponent<PERMISSION> component : components) {
+            boolean componentIsPermitted = authorizationService.hasPermission(user, component.getNeededPermission());
+            component.setVisible(componentIsPermitted);
+        }
+    }
+
+    public void onLogout(USER user) {
+        for (AuthorizedComponent<PERMISSION> component : components) {
+            boolean componentIsPermitted = authorizationService.isPermittedWithoutLogin(component.getNeededPermission());
             component.setVisible(componentIsPermitted);
         }
     }

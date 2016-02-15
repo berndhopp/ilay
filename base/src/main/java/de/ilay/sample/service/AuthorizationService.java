@@ -12,7 +12,7 @@ import java.util.Optional;
  * @param <PERMISSION> the types of permission that are to be evaluated
  * @param <USER>       the types of users an AuthorizationService applies to
  */
-public class AuthorizationService<PERMISSION, USER> {
+public class AuthorizationService<PERMISSION, USER> implements AuthorizationEngine<PERMISSION,USER> {
 
     private final AuthorizationEngine<PERMISSION, USER> authorizationEngine;
     private final CurrentUserProvider<USER> currentUserProvider;
@@ -49,5 +49,13 @@ public class AuthorizationService<PERMISSION, USER> {
         return currentUser.isPresent()
                 ? authorizationEngine.hasPermission(currentUser.get(), permission)
                 : authorizationEngine.isPermittedWithoutLogin(permission);
+    }
+
+    public boolean hasPermission(USER user, PERMISSION permission) {
+        return authorizationEngine.hasPermission(user, permission);
+    }
+
+    public boolean isPermittedWithoutLogin(PERMISSION permission) {
+        return authorizationEngine.isPermittedWithoutLogin(permission);
     }
 }

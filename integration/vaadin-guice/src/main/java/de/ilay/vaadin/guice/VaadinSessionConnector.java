@@ -32,9 +32,9 @@ public class VaadinSessionConnector<USER> extends SessionConnector<USER> {
     @Override
     public void addSessionAuthenticationListener(AuthenticationListener<USER> authenticationListener) {
         if (authenticationListener == null)
-            throw new IllegalArgumentException("authtenticationListener cannot be null");
+            throw new IllegalArgumentException("authenticationListener cannot be null");
 
-        getAuthenticationListeners().add(authenticationListener);
+        getSessionAuthenticationListeners().add(authenticationListener);
     }
 
     private VaadinSession getVaadinSession() {
@@ -47,8 +47,9 @@ public class VaadinSessionConnector<USER> extends SessionConnector<USER> {
         return vaadinSession;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
-    private Collection<AuthenticationListener<USER>> getAuthenticationListeners() {
+    protected Collection<AuthenticationListener<USER>> getSessionAuthenticationListeners() {
         final VaadinSession vaadinSession = getVaadinSession();
 
         Collection<AuthenticationListener<USER>> authenticationListeners = (Collection<AuthenticationListener<USER>>) vaadinSession.getAttribute(AUTHENTICATION_LISTENERS_KEY);
@@ -59,11 +60,6 @@ public class VaadinSessionConnector<USER> extends SessionConnector<USER> {
         }
 
         return authenticationListeners;
-    }
-
-    @Override
-    protected Collection<AuthenticationListener<USER>> getSessionAuthenticationListeners() {
-        return getAuthenticationListeners();
     }
 
     @Override
