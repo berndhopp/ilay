@@ -38,42 +38,52 @@ public class AuthenticationService<CREDENTIALS, USER> {
      * @return a user that was identified and authenticated by the given credentials, otherwise
      * Optional.empty()
      */
-    public USER login(CREDENTIALS credentials, final InsufficientCredentialsCallback<CREDENTIALS> insufficientCredentialsCallback) throws AuthenticationException, UserNotFoundException {
+    public USER login(CREDENTIALS credentials, final InsufficientCredentialsCallback<CREDENTIALS> callback) throws AuthenticationException, UserNotFoundException {
         if (credentials == null) throw new IllegalArgumentException("credentials cannot be null");
-        if (insufficientCredentialsCallback == null)
+        if (callback == null)
             throw new IllegalArgumentException("insufficientCredentialsCallback cannot be null");
 
+        
+        /*
+        * the idea here is:
+        * - try to login
+        * -- if a AuthenticationException is thrown, try to heal it
+        * --- if you cannot heal it, throw it upwards
+        * --- if you can heal it, try to login again
+        * ---- if another AuthenticationException is thrown, throw it upwards
+        * -- if a UserNotFoundException is thrown, try to heal it
+        * --- if you cannot heal it, throw it upwards
+        * --- if you can heal it, try to login again
+        * ---- if another UserNotFoundException is thrown, throw it upwards
+        * - if the login succeeds, return the user
+        * */
         try {
             return login(credentials);
         } catch (AuthenticationException e) {
-            if (insufficientCredentialsCallback.healAuthenticationNotPossible(credentials, e)) {
-                return login(credentials, new InsufficientCredentialsCallback<CREDENTIALS>() {
-                    public boolean healAuthenticationNotPossible(CREDENTIALS credentials, AuthenticationException e) {
-                        return false;
-                    }
-
-                    public boolean healUserNotFound(CREDENTIALS credentials, UserNotFoundException e) {
-                        return insufficientCredentialsCallback.healUserNotFound(credentials, e);
-                    }
-                });
+            if (callback.healAuthenticationNotPossible(credentials, e)) {
+                return login(credentials, constrainCallback(callback, true, false));
             } else {
                 throw e;
             }
         } catch (UserNotFoundException e) {
-            if (insufficientCredentialsCallback.healUserNotFound(credentials, e)) {
-                return login(credentials, new InsufficientCredentialsCallback<CREDENTIALS>() {
-                    public boolean healAuthenticationNotPossible(CREDENTIALS credentials, AuthenticationException e) {
-                        return insufficientCredentialsCallback.healAuthenticationNotPossible(credentials, e);
-                    }
-
-                    public boolean healUserNotFound(CREDENTIALS credentials, UserNotFoundException e) {
-                        return false;
-                    }
-                });
+            if (callback.healUserNotFound(credentials, e)) {
+                return login(credentials, constrainCallback(callback, false, true));
             } else {
                 throw e;
             }
         }
+    }
+
+    private InsufficientCredentialsCallback<CREDENTIALS> constrainCallback(final InsufficientCredentialsCallback<CREDENTIALS> callback, final boolean allowHealUserNotFound, final boolean allowAuthenticationNotPossible){
+        return new InsufficientCredentialsCallback<CREDENTIALS>() {
+            public boolean healAuthenticationNotPossible(CREDENTIALS credentials, AuthenticationException e) {
+                return allowAuthenticationNotPossible && callback.healAuthenticationNotPossible(credentials, e);
+            }
+
+            public boolean healUserNotFound(CREDENTIALS credentials, UserNotFoundException e) {
+                return allowHealUserNotFound && callback.healUserNotFound(credentials, e);
+            }
+        };
     }
 
     /**
