@@ -1,9 +1,11 @@
 package de.ilay.groups;
 
-public class AnyGroupsPermission<GROUP> extends GroupPermission<GROUP> {
+class AnyGroupsPermission<GROUP> extends GroupPermission<GROUP> {
     private final GROUP[] groups;
 
     public AnyGroupsPermission(GROUP[] groups) {
+        if (groups == null || groups.length == 0)
+            throw new IllegalArgumentException("groups cannot be null or empty");
         this.groups = groups;
     }
 

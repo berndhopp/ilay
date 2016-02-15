@@ -1,9 +1,10 @@
 package de.ilay.groups;
 
-public class OneGroupPermission<GROUP> extends GroupPermission<GROUP> {
+class OneGroupPermission<GROUP> extends GroupPermission<GROUP> {
     private final GROUP group;
 
     public OneGroupPermission(GROUP group) {
+        if (group == null) throw new IllegalArgumentException("group cannot be null");
         this.group = group;
     }
 

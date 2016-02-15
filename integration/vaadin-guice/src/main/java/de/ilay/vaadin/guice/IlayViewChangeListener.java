@@ -31,7 +31,7 @@ class IlayViewChangeListener<PERMISSION> implements com.vaadin.navigator.ViewCha
         }
 
         @SuppressWarnings("unchecked")
-        AuthorizedView<PERMISSION> authorizedView = (AuthorizedView<PERMISSION>) event.getNewView();
+        Authorized<PERMISSION> authorizedView = (Authorized<PERMISSION>) event.getNewView();
 
         @SuppressWarnings("unchecked")
         PERMISSION permission = authorizedView.getNeededPermission();

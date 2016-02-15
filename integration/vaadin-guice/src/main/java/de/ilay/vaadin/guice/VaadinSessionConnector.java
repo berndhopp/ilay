@@ -16,12 +16,13 @@ import java.util.Optional;
  */
 public class VaadinSessionConnector<USER> extends SessionConnector<USER> {
 
-    private static final String AUTHENTICATION_LISTENERS_KEY = "authentication_listeners";
+    private final String AUTHENTICATION_LISTENERS_KEY;
     private final Class<USER> userType;
 
     public VaadinSessionConnector(Class<USER> userType) {
         if (userType == null) throw new IllegalArgumentException("userType cannot be null");
         this.userType = userType;
+        this.AUTHENTICATION_LISTENERS_KEY = "authentication_listeners_" + userType.getSimpleName();
     }
 
     public Optional<USER> getCurrent() {
