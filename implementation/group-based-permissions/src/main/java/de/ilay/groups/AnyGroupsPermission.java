@@ -4,8 +4,8 @@ class AnyGroupsPermission<GROUP> extends GroupPermission<GROUP> {
     private final GROUP[] groups;
 
     public AnyGroupsPermission(GROUP[] groups) {
-        if (groups == null || groups.length == 0)
-            throw new IllegalArgumentException("groups cannot be null or empty");
+        if (groups == null || groups.length < 2)
+            throw new IllegalArgumentException("groups cannot be null and must have more than one entry");
         this.groups = groups;
     }
 

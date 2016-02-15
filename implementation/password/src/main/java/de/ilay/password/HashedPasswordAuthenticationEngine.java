@@ -1,7 +1,7 @@
 package de.ilay.password;
 
-import de.ilay.sample.Exception.AuthenticationException;
-import de.ilay.sample.Exception.UserNotFoundException;
+import de.ilay.sample.exception.AuthenticationException;
+import de.ilay.sample.exception.UserNotFoundException;
 import de.ilay.sample.api.AuthenticationEngine;
 
 public abstract class HashedPasswordAuthenticationEngine<USER_IDENTIFIER, CREDENTIALS extends PasswordCredentials<USER_IDENTIFIER>, USER extends HashedPasswordAuthentifyingUser>

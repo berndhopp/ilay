@@ -1,7 +1,7 @@
 package de.ilay.password.bcrypt;
 
-import de.ilay.sample.Exception.AuthenticationException;
-import de.ilay.sample.Exception.UserNotFoundException;
+import de.ilay.sample.exception.AuthenticationException;
+import de.ilay.sample.exception.UserNotFoundException;
 
 import org.junit.Assert;
 import org.junit.Before;

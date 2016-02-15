@@ -1,4 +1,4 @@
-package de.ilay.sample.Exception;
+package de.ilay.sample.exception;
 
 public class AuthenticationException extends Exception {
     public AuthenticationException() {

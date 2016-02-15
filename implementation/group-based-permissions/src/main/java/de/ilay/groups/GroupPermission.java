@@ -2,6 +2,9 @@ package de.ilay.groups;
 
 public abstract class GroupPermission<GROUP> {
 
+    GroupPermission(){
+    }
+
     public static <GROUP> GroupPermission<GROUP> of(GROUP group) {
         return new OneGroupPermission<GROUP>(group);
     }

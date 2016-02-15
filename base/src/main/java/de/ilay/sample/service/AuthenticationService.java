@@ -1,7 +1,7 @@
 package de.ilay.sample.service;
 
-import de.ilay.sample.Exception.AuthenticationException;
-import de.ilay.sample.Exception.UserNotFoundException;
+import de.ilay.sample.exception.AuthenticationException;
+import de.ilay.sample.exception.UserNotFoundException;
 import de.ilay.sample.api.AuthenticationEngine;
 import de.ilay.sample.api.InsufficientCredentialsCallback;
 import de.ilay.sample.api.SessionConnector;

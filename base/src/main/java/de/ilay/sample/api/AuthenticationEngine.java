@@ -1,7 +1,7 @@
 package de.ilay.sample.api;
 
-import de.ilay.sample.Exception.AuthenticationException;
-import de.ilay.sample.Exception.UserNotFoundException;
+import de.ilay.sample.exception.AuthenticationException;
+import de.ilay.sample.exception.UserNotFoundException;
 
 /**
  * A class to do authentication for a specific user-type and it's credentials
