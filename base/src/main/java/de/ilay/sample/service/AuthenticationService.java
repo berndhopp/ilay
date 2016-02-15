@@ -38,7 +38,7 @@ public class AuthenticationService<CREDENTIALS, USER> {
      * @return a user that was identified and authenticated by the given credentials, otherwise
      * Optional.empty()
      */
-    public USER login(CREDENTIALS credentials, InsufficientCredentialsCallback<CREDENTIALS> insufficientCredentialsCallback) throws AuthenticationException, UserNotFoundException {
+    public USER login(CREDENTIALS credentials, final InsufficientCredentialsCallback<CREDENTIALS> insufficientCredentialsCallback) throws AuthenticationException, UserNotFoundException {
         if (credentials == null) throw new IllegalArgumentException("credentials cannot be null");
         if (insufficientCredentialsCallback == null)
             throw new IllegalArgumentException("insufficientCredentialsCallback cannot be null");
@@ -47,13 +47,29 @@ public class AuthenticationService<CREDENTIALS, USER> {
             return login(credentials);
         } catch (AuthenticationException e) {
             if (insufficientCredentialsCallback.healAuthenticationNotPossible(credentials, e)) {
-                return login(credentials);
+                return login(credentials, new InsufficientCredentialsCallback<CREDENTIALS>() {
+                    public boolean healAuthenticationNotPossible(CREDENTIALS credentials, AuthenticationException e) {
+                        return false;
+                    }
+
+                    public boolean healUserNotFound(CREDENTIALS credentials, UserNotFoundException e) {
+                        return insufficientCredentialsCallback.healUserNotFound(credentials, e);
+                    }
+                });
             } else {
                 throw e;
             }
         } catch (UserNotFoundException e) {
             if (insufficientCredentialsCallback.healUserNotFound(credentials, e)) {
-                return login(credentials);
+                return login(credentials, new InsufficientCredentialsCallback<CREDENTIALS>() {
+                    public boolean healAuthenticationNotPossible(CREDENTIALS credentials, AuthenticationException e) {
+                        return insufficientCredentialsCallback.healAuthenticationNotPossible(credentials, e);
+                    }
+
+                    public boolean healUserNotFound(CREDENTIALS credentials, UserNotFoundException e) {
+                        return false;
+                    }
+                });
             } else {
                 throw e;
             }
