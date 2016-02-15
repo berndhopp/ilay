@@ -5,15 +5,17 @@ import java.util.Optional;
 /**
  * instances of this interface connect a user with a certain "session", e.g. a JSecurity session in
  * web environments.
+ *
  * @param <USER> the type of user to connect to a session
  */
 public abstract class SessionConnector<USER> implements CurrentUserProvider<USER> {
 
     public abstract void addSessionAuthenticationListener(AuthenticationListener<USER> authenticationListener);
+
     protected abstract Iterable<AuthenticationListener<USER>> getSessionAuthenticationListeners();
 
-    public void set(USER user){
-        if(getCurrent().isPresent()){
+    public void set(USER user) {
+        if (getCurrent().isPresent()) {
             throw new IllegalStateException("already logged in");
         }
 
@@ -24,10 +26,10 @@ public abstract class SessionConnector<USER> implements CurrentUserProvider<USER
         }
     }
 
-    public void unSet(){
+    public void unSet() {
         final Optional<USER> previousUser = getCurrent();
 
-        if(!previousUser.isPresent()){
+        if (!previousUser.isPresent()) {
             throw new IllegalStateException("cannot log out without logged in user");
         }
 
@@ -39,5 +41,6 @@ public abstract class SessionConnector<USER> implements CurrentUserProvider<USER
     }
 
     protected abstract void setInternal(USER user);
+
     protected abstract void unSetInternal();
 }

@@ -1,7 +1,6 @@
 package de.ilay.vaadin.guice;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 import com.vaadin.guice.annotation.GuiceViewChangeListener;
 import com.vaadin.guice.annotation.UIScope;
@@ -27,7 +26,7 @@ class IlayViewChangeListener<PERMISSION> implements com.vaadin.navigator.ViewCha
     }
 
     public boolean beforeViewChange(ViewChangeEvent event) {
-        if(!authorizedViews.contains(event.getNewView())){
+        if (!authorizedViews.contains(event.getNewView())) {
             return true;
         }
 

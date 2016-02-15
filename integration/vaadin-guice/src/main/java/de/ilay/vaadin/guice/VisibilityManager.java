@@ -12,7 +12,7 @@ import java.util.Set;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @UIScope
-public class VisibilityManager<PERMISSION, USER>  {
+public class VisibilityManager<PERMISSION, USER> {
 
     private final VaadinSessionConnector<USER> sessionConnector;
     private final AuthorizationService<PERMISSION, USER> authorizationService;
@@ -22,17 +22,18 @@ public class VisibilityManager<PERMISSION, USER>  {
     VisibilityManager(
             VaadinSessionConnector<USER> sessionConnector,
             AuthorizationService<PERMISSION, USER> authorizationService,
-            Set<AuthorizedComponent<PERMISSION>> components){
+            Set<AuthorizedComponent<PERMISSION>> components) {
         this.sessionConnector = checkNotNull(sessionConnector);
         this.authorizationService = checkNotNull(authorizationService);
         this.components = checkNotNull(components);
     }
 
-    public void start(){
+    public void start() {
         sessionConnector.addSessionAuthenticationListener(new AuthenticationListener<USER>() {
             public void onLogin(USER user) {
                 reEvaluateVisibility();
             }
+
             public void onLogout(USER user) {
                 reEvaluateVisibility();
             }
@@ -41,7 +42,7 @@ public class VisibilityManager<PERMISSION, USER>  {
         reEvaluateVisibility();
     }
 
-    private void reEvaluateVisibility(){
+    private void reEvaluateVisibility() {
         for (AuthorizedComponent<PERMISSION> component : components) {
             boolean componentIsPermitted = authorizationService.isPermitted(component.getNeededPermission());
             component.setVisible(componentIsPermitted);

@@ -7,8 +7,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Optional;
-
 public class BCryptHashedPasswordAuthenticationEngineTest {
 
     public static final String USER_1_PASSWORD = "secret1";
@@ -18,7 +16,7 @@ public class BCryptHashedPasswordAuthenticationEngineTest {
     private BCryptHashedPasswordAuthenticationEngine<Integer, CredentialsImpl, UserImpl> engine;
 
     @Before
-    public void init(){
+    public void init() {
         user1 = new UserImpl();
         user1.setPassword(USER_1_PASSWORD);
 
@@ -28,15 +26,18 @@ public class BCryptHashedPasswordAuthenticationEngineTest {
         engine = new BCryptHashedPasswordAuthenticationEngine<Integer, CredentialsImpl, UserImpl>() {
             @Override
             protected UserImpl getUser(Integer userId) throws UserNotFoundException {
-                switch (userId){
-                    case 1: return user1;
-                    case 2: return user2;
-                    default: throw new UserNotFoundException();
+                switch (userId) {
+                    case 1:
+                        return user1;
+                    case 2:
+                        return user2;
+                    default:
+                        throw new UserNotFoundException();
                 }
             }
         };
     }
-    
+
     @Test
     public void login_with_correct_credentials_should_return_user() throws UserNotFoundException, AuthenticationException {
         UserImpl user1Optional = engine.authenticateUser(new CredentialsImpl(USER_1_PASSWORD, 1));

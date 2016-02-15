@@ -1,16 +1,16 @@
 package de.ilay.sample.auth;
 
+import com.google.inject.Singleton;
+
 import de.ilay.password.bcrypt.BCryptHashedPasswordAuthenticationEngine;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-import com.google.inject.Singleton;
 
 @Singleton
-public class AuthenticationEngine extends BCryptHashedPasswordAuthenticationEngine<String, Credentials, User>{
+public class AuthenticationEngine extends BCryptHashedPasswordAuthenticationEngine<String, Credentials, User> {
 
     private final Map<String, User> users;
 

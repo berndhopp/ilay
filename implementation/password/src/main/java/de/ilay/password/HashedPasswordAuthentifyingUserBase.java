@@ -4,8 +4,8 @@ public abstract class HashedPasswordAuthentifyingUserBase implements HashedPassw
 
     protected abstract String hashPassword(String password);
 
-    public void setPassword(String password){
-        if(password == null) throw new NullPointerException();
+    public void setPassword(String password) {
+        if (password == null) throw new NullPointerException();
         setPasswordHash(hashPassword(password));
     }
 }

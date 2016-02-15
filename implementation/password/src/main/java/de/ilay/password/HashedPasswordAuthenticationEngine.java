@@ -4,8 +4,6 @@ import de.ilay.sample.Exception.AuthenticationException;
 import de.ilay.sample.Exception.UserNotFoundException;
 import de.ilay.sample.api.AuthenticationEngine;
 
-import java.util.Optional;
-
 public abstract class HashedPasswordAuthenticationEngine<USER_IDENTIFIER, CREDENTIALS extends PasswordCredentials<USER_IDENTIFIER>, USER extends HashedPasswordAuthentifyingUser>
         implements AuthenticationEngine<CREDENTIALS, USER> {
 
@@ -14,7 +12,7 @@ public abstract class HashedPasswordAuthenticationEngine<USER_IDENTIFIER, CREDEN
 
         final boolean passwordMatches = passwordsMatch(credentials.getPassword(), user.getPasswordHash());
 
-        if(!passwordMatches){
+        if (!passwordMatches) {
             throw new AuthenticationException("passwords do not match");
         }
 

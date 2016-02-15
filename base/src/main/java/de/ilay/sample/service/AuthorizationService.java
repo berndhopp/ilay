@@ -8,8 +8,9 @@ import java.util.Optional;
 /**
  * A service for user-authorization. Instances of this class decide whether a certain permission is
  * granted in the current context.
+ *
  * @param <PERMISSION> the types of permission that are to be evaluated
- * @param <USER> the types of users an AuthorizationService applies to
+ * @param <USER>       the types of users an AuthorizationService applies to
  */
 public class AuthorizationService<PERMISSION, USER> {
 
@@ -18,20 +19,25 @@ public class AuthorizationService<PERMISSION, USER> {
 
     /**
      * @param authorizationEngine the {@see AuthorizationEngine} used to evaluate permissions
-     * @param currentUserProvider the {@see CurrentUserProvider} used to get the current user that a permission is to be evaluated against
+     * @param currentUserProvider the {@see CurrentUserProvider} used to get the current user that a
+     *                            permission is to be evaluated against
      */
     public AuthorizationService(
             AuthorizationEngine<PERMISSION, USER> authorizationEngine,
             CurrentUserProvider<USER> currentUserProvider
     ) {
-        if(authorizationEngine == null) throw new IllegalArgumentException("authorizationEngine cannot be null");
-        if(currentUserProvider == null) throw new IllegalArgumentException("currentUserProvider cannot be null");
+        if (authorizationEngine == null)
+            throw new IllegalArgumentException("authorizationEngine cannot be null");
+        if (currentUserProvider == null)
+            throw new IllegalArgumentException("currentUserProvider cannot be null");
         this.authorizationEngine = authorizationEngine;
         this.currentUserProvider = currentUserProvider;
     }
 
     /**
-     * decides whether a certain PERMISSION is granted in the current context, that is for the currently logged in user
+     * decides whether a certain PERMISSION is granted in the current context, that is for the
+     * currently logged in user
+     *
      * @param permission the permission which is to be evaluated
      * @return true if the permission was granted, otherwise false
      */

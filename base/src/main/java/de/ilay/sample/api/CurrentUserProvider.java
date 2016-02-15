@@ -4,6 +4,7 @@ import java.util.Optional;
 
 /**
  * instances of this interface make available the currently logged in user
+ *
  * @param <USER> the type of users
  */
 public interface CurrentUserProvider<USER> {
